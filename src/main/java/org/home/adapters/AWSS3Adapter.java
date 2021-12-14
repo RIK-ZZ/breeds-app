@@ -78,21 +78,4 @@ public class AWSS3Adapter {
 
         return stage;
     }
-
-    public CompletionStage<String> getImageDetails(String url, String objectKey){
-        
-        return BreedURIUtils.downloadImage(url)
-                        .thenCompose(bytes -> 
-                                s3.putObject(PutObjectRequest.builder()
-                                         .bucket(bucketName)
-                                         .contentLength(Long.valueOf(bytes.length))
-                                         .key(objectKey)
-                                         .build(), AsyncRequestBody.fromBytes(bytes)))
-                        .thenApply(result -> "Uploaded")
-                        .exceptionally(ex -> {
-                                throw new RuntimeException("Unable to upload image", ex);
-        
-                        });
-    }
-
 }
